@@ -75,31 +75,26 @@ class DiretorioUsuario:
     def __init__(self, construtor: UsuarioConstrutor):
         self._construtor = construtor
 
-    def with_email(self, firstname, lastname, email):
+    def with_credentials(self, firstname, lastname, email, senha_1, senha_2):
+        # Ja fazendo a verificaçao se o usuario pode ser criado aqui
+        # Caso as senhas nao forem iguais nao salva.
+        if senha_1 == senha_2:
+            self._construtor.get_firstname(firstname)\
+                .get_lastname(lastname)\
+                .get_email(email)\
+                .get_senha(senha_1)
 
-        self._construtor.get_firstname(firstname)\
-            .get_lastname(lastname)\
-            .get_email(email)
+        else:
+            print('ERRO! A senha 1 precisa ser igual a senha 2')
 
         return self._construtor.result
-
-    def with_senha(self, firstname, senha_1, senha_2):
-        self._construtor.get_firstname(firstname)
-
-        if senha_1 == senha_2:
-            self._construtor.get_senha
-            return self._construtor.result
-        print('Senha 1 tem que ser igual senha 2')
 
 
 if __name__ == '__main__':
     user_builder = UsuarioConstrutor()
     diretorio_usuario = DiretorioUsuario(user_builder)
 
-    user1 = diretorio_usuario.with_email(
-        'Joao', 'Carlos', 'carlos@email.com'
+    user1 = diretorio_usuario.with_credentials(
+        'Joao', 'Carlos', 'carlos@email.com', 123, 133
     )
-    print(user1)
-
-    user1 = diretorio_usuario.with_senha('Joao', 123, 123)
     print(user1)
