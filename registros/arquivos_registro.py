@@ -10,7 +10,10 @@ def verifica_arquivo(arquivo):
         a.close()
 
     except FileNotFoundError as e:
-        print(f'O arquivo ({arquivo}) nao foi encontrado! >> ({e})')
+        print(
+            f'O arquivo ({arquivo}) nao foi encontrado! '
+            f'Error>> ({type(e).__name__})'
+        )
         return False
 
     else:
@@ -24,22 +27,17 @@ def cria_arquivo(arquivo):
         a.close()
 
     except (FileNotFoundError) as error:
-        print(f'O arquivo ({arquivo}) nao foi encontrado!\nErro>> ({error})')
+        print(
+            f'O arquivo ({arquivo}) nao foi encontrado! '
+            f'Erro>> ({type(error).__name__})'
+        )
 
     else:
-        print(f'({arquivo}) criado com sucesso!')
+        print(f'Arquivo ({arquivo}) criado com sucesso!')
 
 
 # Funcao para escrever/salvar o usuario em json
-def salva_usuario(arquivo, firstname, lastname, email, senha):
-    # Cria um dicionário para o novo usuário
-    usuario = {
-        'firstname': firstname,
-        'lastname': lastname,
-        'email': email,
-        'senha': senha
-    }
-
+def salva_usuario(arquivo, dict):
     try:
         # Tenta abrir o arquivo existente
         with open(arquivo, 'r') as arq:
@@ -47,18 +45,24 @@ def salva_usuario(arquivo, firstname, lastname, email, senha):
 
     # Tratando erro em caso o arquivo nao ser encontrado
     except FileNotFoundError as error:
-        print(f'O arquivo ({arquivo}) nao foi encontrado!\nErro>> ({error})')
+        print(
+            f'O arquivo ({arquivo}) nao foi encontrado! '
+            f'Erro>> ({type(error).__name__})'
+        )
         # Se o arquivo não existir ou estiver vazio, inicia uma lista vazia
         lista_credenciais = []
 
     # Tratando erro de decodificaçao do arquivo jSON
     except json.decoder.JSONDecodeError as error:
-        print(f'Erro ao decodificar o arquivo ({arquivo})!\nErro>> ({error})')
+        print(
+            f'Erro ao decodificar o arquivo ({arquivo})! '
+            f'Erro>> ({type(error).__name__})'
+        )
         # Se o arquivo não existir ou estiver vazio, inicia uma lista vazia
         lista_credenciais = []
 
     # Adiciona o novo usuário à lista de usuários
-    lista_credenciais.append(usuario)
+    lista_credenciais.append(dict)
 
     try:
         # Tenta abrir o arquivo para adicionar a lista contendo os dados
@@ -68,7 +72,10 @@ def salva_usuario(arquivo, firstname, lastname, email, senha):
 
     # Trata o erro caso arquivo nao seja encontrado
     except (FileNotFoundError) as error:
-        print(f'Arquivo ({arquivo}) nao encontrado!\n ({error})')
+        print(
+            f'Arquivo ({arquivo}) nao encontrado! '
+            f'Error>> ({type(error).__name__})'
+        )
 
     else:
         # Confirma que tudo correu bem com o cadastro
@@ -99,4 +106,4 @@ def realiza_login(arquivo, email, senha):
             return False
 
     except FileNotFoundError as error:
-        print(f'Erro>> ({error})')
+        print(f'Erro>> ({type(error).__name__})')

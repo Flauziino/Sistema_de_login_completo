@@ -97,4 +97,3 @@ if __name__ == '__main__':
     user1 = diretorio_usuario.with_credentials(
         'Joao', 'Carlos', 'carlos@email.com', 123, 133
     )
-    print(user1)

@@ -26,12 +26,17 @@ def ler_inteiro(txt):
                 num = int(n)
                 return num
 
-        except ValueError as error:
-            print(f'Erro> ({error}) digite um numero valido!')
+        except ValueError:
+            raise ValueError
 
         except KeyboardInterrupt:
-            print('O usuario preferiu terminar o programa')
+            print('Parada forçada')
             raise KeyboardInterrupt
+
+        else:
+            print()
+            print('Erro! Digite um numero inteiro!')
+            print()
 
 
 if __name__ == '__main__':
@@ -41,3 +46,4 @@ if __name__ == '__main__':
     ]
     titulos('MAIN MENU')
     menu(opc)
+    ler_inteiro('Digite um numero: ')
