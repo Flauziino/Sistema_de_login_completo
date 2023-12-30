@@ -1,4 +1,5 @@
 import json
+from dados_menu import menu
 
 
 # Funcao para verificar se o arquivo existe
@@ -92,19 +93,17 @@ def realiza_login(arquivo, email, senha):
                 if usuario['email'] == email:
                     # verifica se a senha esta correta
                     if usuario['senha'] == senha:
+                        print('LOGIN REALIZADO COM SUCESSO')
                         # retornando True para poder realizar a logica
                         # de autenticaçao
                         return True
 
+            print('ERRO!')
+            print('Email ou senha incorretos')
             return False
 
-    # Tratando erro de "FileNotFound"
     except FileNotFoundError as error:
         print(f'Erro>> ({type(error).__name__})')
-
-    # Tratando erro de leitura do jSON
-    except json.JSONDecodeError as error_2:
-        print(f'Erro>> ({type(error_2).__name__})')
 
 
 # Ler usuario para validar cadastro
@@ -137,10 +136,6 @@ def validacao_cadastro(arquivo, email):
     except FileNotFoundError as error:
         print(f'Erro>> ({type(error).__name__})')
 
-    # Tratando erro de leitura do json
-    except json.JSONDecodeError as error_2:
-        print(f'Erro>> ({type(error_2).__name__})')
-
 
 # Funcao para mostrar dados do usuario apos login
 def mostrar_dados_usuario(arquivo, email):
@@ -166,9 +161,96 @@ def mostrar_dados_usuario(arquivo, email):
         print(f'Erro>> ({type(error_2).__name__})')
 
 
-# Realizando testes previos
+# Funcao para mostrar dados do usuario para atualizacao (UPDATE)
+# Funcao longa apenas para que ela seja unicamente para a funcionalidade de
+# atualizar os dados
+def mostrar_dados_para_atualizar(arquivo, email):
+    try:
+        with open(arquivo, 'r') as arq:
+            # pegando todos os arquivos(usuarios) da base de dados (jSON)
+            usuarios = json.load(arq)
+
+            for usuario in usuarios:
+                # Logica para mostrar ao usuario apenas seus proprios dados
+                if email == usuario['email']:
+                    print('Opçoes disponiveis para atualizar:')
+
+                    # Loop mostrando as chaves enumeradas para realizar
+                    # uma seleçao mais automatica, sem hardcoded
+                    for key, value in enumerate(usuario.keys()):
+                        print(f'{key} - {value}')
+
+                    # Converte choice para um inteiro
+                    choice = int(input(
+                        'O que vc deseja atualizar? '
+                        )
+                    )
+
+                    # Verifica se a escolha esta entre o range de opçoes
+                    if choice >= 0 and choice <= len(usuario):
+                        # Obtendo a chave correspondente ao indice
+                        keys = list(usuario.keys())
+                        chave_escolhida = keys[choice]
+
+                        # Logica para troca de senha
+                        # Atualizar a senha apenas quando ela for digitada
+                        # igualmente 2 vezes
+                        if chave_escolhida == 'senha':
+                            senha1 = input('Digite a senha: ')
+                            senha2 = input('Confirme a senha: ')
+                            if senha1 == senha2:
+                                usuario[chave_escolhida] = senha1
+
+                        # Checando se o novo email nao existe na base de dados
+                        elif chave_escolhida == 'email':
+                            # Novo email
+                            novo_email = input('Digite novo email: ')
+
+                            email_existe = False
+                            # Verificando se o email existe em algum outro
+                            # Usuario
+                            for user in usuarios:
+                                if novo_email == user['email'] \
+                                  and novo_email != email:
+                                    email_existe = True
+                                    break  # Caso email seja encontrado
+
+                            if email_existe:
+                                menu.titulos(
+                                    'Erro ao atualizar email: JA EXISTE'
+                                )
+
+                            else:
+                                usuario[chave_escolhida] = novo_email
+                                menu.titulos(
+                                    'Email atualizado com sucesso'
+                                )
+
+                        else:
+                            novo_valor = input(
+                                f'Digite o novo valor para {chave_escolhida}: '
+                            )
+                            usuario[chave_escolhida] = novo_valor
+                    else:
+                        print('Opçao invalida')
+
+        # Atualiza os dados do usuario apos editar
+        with open(arquivo, 'w') as arq:
+            json.dump(usuarios, arq, ensure_ascii=False, indent=2)
+
+    # Tratando o erro "FileNotFound"
+    except FileNotFoundError as error:
+        print(f'Erro>> ({type(error).__name__})')
+
+    # Tratando erro de leitura do json
+    except json.JSONDecodeError as error_2:
+        print(f'Erro>> ({type(error_2).__name__})')
+
+
 if __name__ == '__main__':
-    email = 'email@email'
+    email = 'lucas@email'
     arquivo = 'usuarios.json'
-    validacao_cadastro(arquivo, email)
-    mostrar_dados_usuario(arquivo, email)
+    print()
+    validacao_cadastro('usuarios.json', email)
+    mostrar_dados_usuario(arquivo, 'fernanda@email')
+    mostrar_dados_para_atualizar(arquivo, email)

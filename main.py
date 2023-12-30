@@ -43,6 +43,8 @@ if __name__ == '__main__':
 
             # Logica para realizar cadastro
             if opcao == 1:
+                # Criaçao do usuario
+                # (CREATE)
                 menu.titulos('AREA DE CADASTRO')
 
                 nome = str(input('Digite o seu primeiro nome: ')).strip()
@@ -117,7 +119,11 @@ if __name__ == '__main__':
                         os.system('cls')
 
                         if opcao == 1:
-                            ...
+                            # Atualicaçao (UPDATE)
+                            menu.titulos('Atualizando dados')
+                            arquivos_registro.mostrar_dados_para_atualizar(
+                                usuarios, email
+                            )
 
                         elif opcao == 2:
                             ...
