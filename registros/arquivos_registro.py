@@ -77,10 +77,6 @@ def salva_usuario(arquivo, dict):
             f'Error>> ({type(error).__name__})'
         )
 
-    else:
-        # Confirma que tudo correu bem com o cadastro
-        print('USUARIO FOI REGISTRADO COM SUCESSO!!!')
-
 
 # Funçao para realizar o login do usuario
 def realiza_login(arquivo, email, senha):
@@ -89,7 +85,7 @@ def realiza_login(arquivo, email, senha):
         with open(arquivo, 'r') as arq:
             lista_usuarios = json.load(arq)
 
-            # primeiro loot para ler os arquivos do json.load (uma lista)
+            # primeiro loop para ler os arquivos do json.load (uma lista)
             for usuario in lista_usuarios:
 
                 # verifica se o email pertence a algum usuario
@@ -107,3 +103,39 @@ def realiza_login(arquivo, email, senha):
 
     except FileNotFoundError as error:
         print(f'Erro>> ({type(error).__name__})')
+
+
+# Ler usuario para validar cadastro
+# caso o email ja conste no sistema recusa.
+def validacao_cadastro(arquivo, email):
+    try:
+        # Tenta abrir o arquivo para leitura do json
+        with open(arquivo, 'r') as arq:
+            lista_cadastros = json.load(arq)
+
+            email_existe = False  # Variavel para rastrear o email
+
+            # Loop para verificar os dados dentro do json
+            for usuarios in lista_cadastros:
+                if email == usuarios['email']:
+                    email_existe = True
+                    break  # Se email for encontrado nao tem pq continuar...
+
+            if email_existe:
+                # Retorno para logica do cadastro
+                # False (Email ja existe)
+                return False
+
+            else:
+                # Retorno para logica do cadastro
+                # True (Email pode ser usado)
+                return True
+
+    # Tratando o erro "FileNotFound"
+    except FileNotFoundError as error:
+        print(f'Erro>> ({type(error).__name__})')
+
+
+if __name__ == '__main__':
+    email = 'email@email.com'
+    validacao_cadastro('usuarios.json', email)

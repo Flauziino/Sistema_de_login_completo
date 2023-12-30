@@ -31,6 +31,7 @@ if __name__ == '__main__':
             menu.titulos('MENU PRINCIPAL')
             menu.menu(MENU)
             opcao = menu.ler_inteiro('Escolha uma opcao>> ')
+            os.system('cls')
 
             # Logica para realizar cadastro
             if opcao == 1:
@@ -44,22 +45,36 @@ if __name__ == '__main__':
                 senha_1 = input('Digite uma senha: ')
                 senha_2 = input('Confirme a senha: ')
 
-                user = diretorio_usuario.with_credentials(
-                    nome,
-                    ultimo_nome,
-                    email,
-                    senha_1,
-                    senha_2
-                )
+                # Realizar leitura do JSON para validar se o email
+                # ja consta salvo pra outro usuario
+                # caso seja um email "novo", permitir o cadastro
+                if arquivos_registro.validacao_cadastro(usuarios, email):
+                    # Salvando os dados usando diretorio_usuario instanciado
+                    user = diretorio_usuario.with_credentials(
+                        nome,
+                        ultimo_nome,
+                        email,
+                        senha_1,
+                        senha_2
+                    )
 
-                user_dict = dict(
-                    primeiro_nome=user.primeiro_nome,
-                    ultimo_nome=user.ultimo_nome,
-                    email=user.email,
-                    senha=user.senha
-                )
+                    # Pegando os dados de "user" e transformando em um dict
+                    # para poder salvar corretamente em jSON
+                    user_dict = dict(
+                        primeiro_nome=user.primeiro_nome,
+                        ultimo_nome=user.ultimo_nome,
+                        email=user.email,
+                        senha=user.senha
+                    )
 
-                arquivos_registro.salva_usuario(usuarios, user_dict)
+                    # Salvando os dados de "user_dict" no jSON
+                    arquivos_registro.salva_usuario(usuarios, user_dict)
+                    menu.titulos('CADASTRO REALIZADO COM SUCESSO')
+
+                else:
+                    menu.titulos('FALHA AO REALIZAR CADASTRO')
+                    menu.titulos('O email ja existe na base de dados')
+                    sleep(1)
 
             # Logica para realizar login
             elif opcao == 2:
@@ -71,7 +86,7 @@ if __name__ == '__main__':
             # Logica para finalizar sistema
             elif opcao == 3:
                 menu.titulos('Finalizando...')
-                sleep(1)
+                sleep(1)  # Funcao para delay de 1 segundo
                 sistema_principal = False
 
             # Verificando se a opcao esta entre as opcoes validas
@@ -82,8 +97,9 @@ if __name__ == '__main__':
         except KeyboardInterrupt as error:
             print(f'Error: ({type(error).__name__})')
             menu.titulos('Finalizando...')
-            sleep(1)
+            sleep(1)  # Funcao para delay de 1 segundo
             sistema_principal = False
 
+# Limpa o terminal utilizando "os"
 os.system('cls')
 menu.titulos('VOLTE SEMPRE!!!')
