@@ -92,17 +92,19 @@ def realiza_login(arquivo, email, senha):
                 if usuario['email'] == email:
                     # verifica se a senha esta correta
                     if usuario['senha'] == senha:
-                        print('LOGIN REALIZADO COM SUCESSO')
                         # retornando True para poder realizar a logica
                         # de autenticaçao
                         return True
 
-            print('ERRO!')
-            print('Email ou senha incorretos')
             return False
 
+    # Tratando erro de "FileNotFound"
     except FileNotFoundError as error:
         print(f'Erro>> ({type(error).__name__})')
+
+    # Tratando erro de leitura do jSON
+    except json.JSONDecodeError as error_2:
+        print(f'Erro>> ({type(error_2).__name__})')
 
 
 # Ler usuario para validar cadastro
@@ -135,7 +137,38 @@ def validacao_cadastro(arquivo, email):
     except FileNotFoundError as error:
         print(f'Erro>> ({type(error).__name__})')
 
+    # Tratando erro de leitura do json
+    except json.JSONDecodeError as error_2:
+        print(f'Erro>> ({type(error_2).__name__})')
 
+
+# Funcao para mostrar dados do usuario apos login
+def mostrar_dados_usuario(arquivo, email):
+    try:
+        with open(arquivo, 'r') as arq:
+            # Pegando todos os arquivos salvos na "base de dados"(jSON)
+            usuarios = json.load(arq)
+
+            # Loop na lista
+            for usuario in usuarios:
+                # Loop dos dicts dentro da lista
+                for k, v in usuario.items():
+                    # Logica para mostrar dados apenas do usuario logado
+                    if email == usuario['email']:
+                        print(f'   {k.upper().ljust(30)} {v}')
+
+    # Tratando o erro "FileNotFound"
+    except FileNotFoundError as error:
+        print(f'Erro>> ({type(error).__name__})')
+
+    # Tratando erro de leitura do json
+    except json.JSONDecodeError as error_2:
+        print(f'Erro>> ({type(error_2).__name__})')
+
+
+# Realizando testes previos
 if __name__ == '__main__':
-    email = 'email@email.com'
-    validacao_cadastro('usuarios.json', email)
+    email = 'email@email'
+    arquivo = 'usuarios.json'
+    validacao_cadastro(arquivo, email)
+    mostrar_dados_usuario(arquivo, email)

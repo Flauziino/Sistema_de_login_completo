@@ -20,6 +20,14 @@ if __name__ == '__main__':
         '3-Finalizar'
     ]
 
+    # Variavel do menu apos o login ser bem sucedido
+    # Recebe lista de opcoes
+    MENU_LOGIN = [
+        '1-Editar dados de cadastro',
+        '2-Apagar conta',
+        '3-Deslogar'
+    ]
+
     # instanciando o builder
     user_builder = registro.UsuarioConstrutor()
     # linkando o builder com diretorio de usuario
@@ -81,7 +89,53 @@ if __name__ == '__main__':
                 menu.titulos('AREA DE LOGIN')
                 email = input('Digite o email: ')
                 senha = input('Digite a senha: ')
-                arquivos_registro.realiza_login(usuarios, email, senha)
+                logado = True
+
+                # Funcao para fazer authentificaçao
+                # Se True = Login com sucesso
+                # Se False volta ao menu principal acusando erro de email ou
+                # senha
+                if arquivos_registro.realiza_login(
+                    usuarios, email, senha
+                ):
+                    menu.titulos('LOGIN REALIZADO COM SUCESSO')
+                    sleep(0.5)
+                    os.system('cls')
+
+                    # Loop interno, para realizacao de leitura, atualizacao
+                    # e delete para concluir o CRUD
+                    while logado:
+                        menu.titulos('DADOS DO USUARIO')
+                        # Leitura (READ)
+                        # Le apenas o usuario logado em questao
+                        arquivos_registro.mostrar_dados_usuario(
+                            usuarios, email
+                        )
+                        menu.linhas()
+                        menu.menu(MENU_LOGIN)
+                        opcao = menu.ler_inteiro('Escolha uma opçao>> ')
+                        os.system('cls')
+
+                        if opcao == 1:
+                            ...
+
+                        elif opcao == 2:
+                            ...
+
+                        elif opcao == 3:
+                            menu.titulos('Retornando ao MENU PRINCIPAL...')
+                            sleep(1)
+                            menu.titulos('ATE BREVE!!')
+                            os.system('cls')
+                            logado = False
+
+                        elif opcao not in range(1, 3):
+                            menu.titulos(
+                                'Erro! Opçao invalida, tente novamente'
+                            )
+
+                else:
+                    menu.titulos('Erro!!! Email ou senha invalido')
 
             # Logica para finalizar sistema
             elif opcao == 3:
