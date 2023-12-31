@@ -126,7 +126,11 @@ if __name__ == '__main__':
                             )
 
                         elif opcao == 2:
-                            ...
+                            # Remoçao (DELETE)
+                            menu.titulos('Removendo dados')
+                            arquivos_registro.mostrar_dados_para_deletar(
+                                usuarios, email
+                            )
 
                         elif opcao == 3:
                             menu.titulos('Retornando ao MENU PRINCIPAL...')

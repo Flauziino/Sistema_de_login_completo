@@ -231,6 +231,9 @@ def mostrar_dados_para_atualizar(arquivo, email):
                                 f'Digite o novo valor para {chave_escolhida}: '
                             )
                             usuario[chave_escolhida] = novo_valor
+                            menu.titulos(
+                                f'{chave_escolhida} atualizada com sucesso!'
+                            )
                     else:
                         print('Opçao invalida')
 
@@ -247,10 +250,47 @@ def mostrar_dados_para_atualizar(arquivo, email):
         print(f'Erro>> ({type(error_2).__name__})')
 
 
+# Funcao para deletar os dados do usuario (DELETE)
+def mostrar_dados_para_deletar(arquivo, email):
+    try:
+        # Abre o arquivo em leitura
+        with open(arquivo, 'r') as arq:
+            # extrai a lista de todos usuarios
+            lista_usuarios = json.load(arq)
+
+            # loop para entrar nos dicts dentro da lista
+            for usuario in lista_usuarios:
+                # checagem para mostrar apenas os dados de quem esta logado
+                if email == usuario['email']:
+                    # confirmacao para saber se o usuario tem certeza que
+                    # deseja deletar sua conta
+                    check = input(
+                        'Tem certeza que deseja apagar a conta? [S/N] '
+                    ).strip().upper()[0]
+
+                    if check in 'Ss':
+                        lista_usuarios.remove(usuario)
+                        menu.titulos('Usuario apagado com sucesso!')
+
+        # adiciona no jSON os novos dados, apos o usuario ter deletado sua
+        # conta
+        with open(arquivo, 'w') as arq:
+            json.dump(lista_usuarios, arq, ensure_ascii=False, indent=2)
+
+    # Tratando o erro "FileNotFound"
+    except FileNotFoundError as error:
+        print(f'Erro>> ({type(error).__name__})')
+
+    # Tratando erro de leitura do json
+    except json.JSONDecodeError as error_2:
+        print(f'Erro>> ({type(error_2).__name__})')
+
+
 if __name__ == '__main__':
-    email = 'lucas@email'
+    email = 'edu@email'
     arquivo = 'usuarios.json'
     print()
-    validacao_cadastro('usuarios.json', email)
-    mostrar_dados_usuario(arquivo, 'fernanda@email')
-    mostrar_dados_para_atualizar(arquivo, email)
+    # validacao_cadastro('usuarios.json', email)
+    mostrar_dados_usuario(arquivo, email)
+    # mostrar_dados_para_atualizar(arquivo, email)
+    mostrar_dados_para_deletar(arquivo, email)
