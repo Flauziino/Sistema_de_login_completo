@@ -83,11 +83,11 @@ class DiretorioUsuario:
                 .get_lastname(lastname)\
                 .get_email(email)\
                 .get_senha(senha_1)
+            return self._construtor.result
 
         else:
-            print('ERRO! A senha 1 precisa ser igual a senha 2')
-
-        return self._construtor.result
+            # Retorna None para realizar logica de criaçao de cadastro
+            return None
 
 
 if __name__ == '__main__':

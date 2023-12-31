@@ -70,16 +70,21 @@ if __name__ == '__main__':
 
                     # Pegando os dados de "user" e transformando em um dict
                     # para poder salvar corretamente em jSON
-                    user_dict = dict(
-                        primeiro_nome=user.primeiro_nome,
-                        ultimo_nome=user.ultimo_nome,
-                        email=user.email,
-                        senha=user.senha
-                    )
+                    # Mas antes
+                    # Verifica se o usuário foi criado com sucesso
+                    if user is not None:
+                        user_dict = dict(
+                            primeiro_nome=user.primeiro_nome,
+                            ultimo_nome=user.ultimo_nome,
+                            email=user.email,
+                            senha=user.senha
+                        )
 
-                    # Salvando os dados de "user_dict" no jSON
-                    arquivos_registro.salva_usuario(usuarios, user_dict)
-                    menu.titulos('CADASTRO REALIZADO COM SUCESSO')
+                        arquivos_registro.salva_usuario(usuarios, user_dict)
+                        menu.titulos('CADASTRO REALIZADO COM SUCESSO')
+                    else:
+                        # Lógica para lidar com o erro de senhas diferentes
+                        print('ERRO! A senha 1 precisa ser igual a senha 2')
 
                 else:
                     menu.titulos('FALHA AO REALIZAR CADASTRO')
