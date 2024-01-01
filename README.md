@@ -2,6 +2,7 @@ Sistema de Login Modularizado
 Este é um sistema de login modularizado em Python que utiliza o padrão de projeto Builder (complexidade adicionada apenas para treinamento), separando funcionalidades em módulos para facilitar a manutenção e expansão do sistema.
 
 Nesse projeto foi feito CREATE, READ, UPDATE e DELETE
+
 CREATE = Cadastro e armazenamento do usuario em jSON
 READ = Apos o login LE e Mostra os dados do usuario logado
 UPDATE = Da opçao do usuario logado atualizar dados, para senha precisa da confirmaçao e o email nao pode existir na base de dados
