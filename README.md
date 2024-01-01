@@ -3,6 +3,7 @@ Este é um sistema de login modularizado em Python que utiliza o padrão de proj
 Nesse projeto foi feito CREATE, READ, UPDATE e DELETE
 
 Estrutura do Projeto
+
     dados_menu: Módulo para a interface do usuário.
         menu.py: Contém as funções responsáveis pela interação com o usuário.
 
