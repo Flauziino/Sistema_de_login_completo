@@ -11,6 +11,7 @@ UPDATE = Da opçao do usuario logado atualizar dados, para senha precisa da conf
 
 DELETE = Pode apagar a conta do usuario
 
+
 Estrutura do Projeto
 
     dados_menu: Módulo para a interface do usuário.
